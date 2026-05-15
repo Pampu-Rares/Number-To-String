@@ -1,13 +1,74 @@
 let number = 10000;
+//e.g: 4: thousand
 const numberOfZeroes = {
     '0': "",
-    '4': "thousand",
-    '7': "million",
-    '10': "billion",
-    '13': "trillion",
-    '16': "quadrillion",
-    '19': "quintillion",
+    '6': "thousand",
+    '9': "million",
+    '12': "billion",
+    '15': "trillion",
+    '18': "quadrillion",
+    '21': "quintillion",
+    '24': "sextillion",
+    '27': "septillion",
+    '30': "octillion",
+    '33': "nonillion",
+    '36': "decillion",
+    '39': "undecillion",
+    '42': "duodecillion",
+    '45': "tredecillion",
+    '48': "quattuordecillion",
+    '51': "quindecillion",
+    '54': "sexdecillion",
+    '57': "septendecillion",
+    '60': "octodecillion",
+    '63': "novemdecillion",
+    '66': "vigintillion",
+    '69': "unvigintillion",
+    '72': "duovigintillion",
+    '75': "trevigintillion",
+    '78': "quattuorvigintillion",
+    '81': "quinvigintillion",
+    '84': "sexvigintillion",
+    '87': "septenvigintillion",
+    '90': "octovigintillion",
+    '93': "novemvigintillion",
+    '96': "trigintillion",
+    '99': "untrigintillion",
+    '102': "duotrigintillion",
+    '105': "tretrigintillion",
+    '108': "quattuortrigintillion",
+    '111': "quintrigintillion",
+    '114': "sextrigintillion",
+    '117': "septentrigintillion",
+    '120': "octotrigintillion",
+    '123': "novemtrigintillion",
+    '126': "quadragintillion",
+    '129': "unquadragintillion",
+    '132': "duoquadragintillion",
+    '135': "trequadragintillion",
+    '138': "quattuorquadragintillion",
+    '141': "quinquadragintillion",
+    '144': "sexquadragintillion",
+    '147': "septenquadragintillion",
+    '150': "octoquadragintillion",
+    '153': "novemquadragintillion",
+    '156': "quinquagintillion",
+    '159': "unquinquagintillion",
+    '162': "duoquinquagintillion",
+    '165': "trequinquagintillion",
+    '168': "quattuorquinquagintillion",
+    '171': "quinquinquagintillion",
+    '174': "sexquinquagintillion",
+    '177': "septenquinquagintillion",
+    '180': "octoquinquagintillion",
+    '183': "novemquinquagintillion",
+    '186': "sexagintillion",
+    '189': "unsexagintillion",
+    '192': "duosexagintillion",
+    '195': "tresexagintillion",
+    '198': "quattuorsexagintillion",
 };
+//e.g: 10: ten, 11: eleven
 const specialNumbers = {
     '10': "ten",
     '11': "eleven",
@@ -20,6 +81,7 @@ const specialNumbers = {
     '18': "eighteen",
     '19': "nineteen"
 }
+//eg: 20: twenty
 const numberOfTens = {
     '20': "twenty",
     '30': "thirty",
@@ -31,7 +93,8 @@ const numberOfTens = {
     '90': "ninety",
     '100': "one hundred"
 };
-const numberToString = {
+//e.g: 1: one
+const digitToString = {
     '0': "",
     '1': "one",
     '2': "two",
@@ -46,28 +109,41 @@ const numberToString = {
 };
 
 function getNrOfUnits(number) {
+    const digit = /^\d$/;
     let copy = number;
+    let numberString = "";
     let i = 0;
-    while(copy >= 1) {
-        i++;
-        copy/=10;
+    while(copy[0] == 0) copy = copy.slice(1);
+    while(copy) {
+        if(digit.test(copy[0])) {
+            i++;
+            numberString += copy[0];
+        }
+        copy = copy.slice(1);
     }
-    return i;
+    if(i % 3)   {
+        numberString = '0'.repeat(3 - i % 3) + numberString;
+        i += 3 - i%3;
+    } 
+    return {
+        numberLength: i,
+        numberString
+    };
 }
 
 function transformUpToTen(unit) {
-    return numberToString[unit.toString()];
+    return digitToString[unit];
 }
 
 function transformUpToOneHundred(number) {
-    if(number>=20 && number<=100) return numberOfTens[Math.floor(number/10) * 10] + ` ${number%10 != 0 ? transformUpToTen(number%10) : ""}`;
+    if(number >= 20) return numberOfTens[Math.floor(number/10) * 10] + ` ${number%10 != 0 ? transformUpToTen(number%10) : ""}`;
     else if(number < 20 && number >= 10) return specialNumbers[number];
     else return transformUpToTen(number);
 }
 
 
 function transformUpToAThousand(number) {
-    if(number >= 100 && number < 1000) return transformUpToTen(Math.floor(number/100)) + " hundred " + transformUpToOneHundred(number%100);
+    if(number >= 100) return transformUpToTen(Math.floor(number/100)) + " hundred " + transformUpToOneHundred(number%100);
     else return transformUpToOneHundred(number%100);
 }
 
@@ -84,51 +160,28 @@ function getFirstThree(number) {
 }
 
 function approximateNrOfZeroes(unitsNr) {
-    if(unitsNr <= 3) return '0';
-    else if(unitsNr % 3 == 0) return unitsNr - 2;
-    else return unitsNr - unitsNr % 3 + 1;
+    if(unitsNr == 3) return 0;
+    else return unitsNr;
 }
 
-function transformFirstThousand(number) {
-    let nrOfUnits = getNrOfUnits(number);
-    let firstThousandUnits = getFirstThree(number);
-    console.log(nrOfUnits, firstThousandUnits);
-    number = number - firstThousandUnits * 10**(nrOfUnits % 3 ? nrOfUnits - nrOfUnits % 3 : nrOfUnits - 3);
-    console.log(number)
-    return transformUpToAThousand(firstThousandUnits) + " " + numberOfZeroes[approximateNrOfZeroes(nrOfUnits)] + " ";
+function transformThousand(number, numberLength) {
+    return transformUpToAThousand(number) + " " + numberOfZeroes[approximateNrOfZeroes(numberLength)] + " ";
 }
 
-function transformToString(number) {
+export function transformToString(number) {
     if(number == 0) return "Zero";
     let string = "";
-    let copy = number;
-    let zeroesInNumber = getNrOfUnits(number);
-    console.log(zeroesInNumber);
-    do {
-        string += transformFirstThousand(copy);
-        let firstThousandUnits = getFirstThree(copy);
-        copy = copy - firstThousandUnits * 10**(zeroesInNumber % 3 ? zeroesInNumber - zeroesInNumber % 3 : zeroesInNumber - 3);
-        zeroesInNumber-= 3;
-    }while(zeroesInNumber > 0)
-    return string;
+    let { numberLength, numberString } = getNrOfUnits(number);
+    while(numberLength > 0) {
+        string += transformThousand(parseInt(numberString.slice(0, 3)), numberLength);
+        numberString = numberString.slice(3);
+        numberLength -= 3;
+    }
+    return string[0].toUpperCase() + string.slice(1, string.length - 2) + '.';
 }
 
+/*
  const random = Math.floor(Math.random() * 10000000);
  console.log(random); 
-console.log(transformToString(random));
-
-const input = document.getElementById("number-input");
-const enterBtn = document.getElementById("enter-btn");
-const modal = document.getElementById("result-modal");
-const closeModalBtn = document.getElementById("close-modal");
-const result = document.getElementById("result");
-
-function processInput() {
-    result.innerHTML = `<p>${transformToString(Number(input.value))}</p>`
-    modal.showModal();
-}
-
-enterBtn.addEventListener("click", processInput);
-closeModalBtn.addEventListener("click", () => {
-    modal.close();
-});
+console.log(transformToString(String(random)));
+*/

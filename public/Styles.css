@@ -19,12 +19,12 @@ body {
 
 main {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     background: var(--background-color);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10%;
+    gap: clamp(60px,10%, 200px);
 }
 
 h1 {
@@ -35,18 +35,21 @@ h1 {
 #app-container {
     background: var(--div-color);
     width: 75%;
-    height: 50%;
-    padding: 40px;
+    min-height: clamp(400px, 60vw, 420px);
+    padding: 0 40px;
 
     font-family:Arial, Helvetica, sans-serif;
 
     border-radius: 20px;
-    /* border: 5px solid gray; */
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-evenly;
+}
+
+details {
+    font-size: 1rem;
 }
 
 details > summary {
@@ -63,8 +66,8 @@ button {
 }
 
 #number-input {
-    height: 30%;
-    width: 60%;
+    height: clamp(40px, 30%, 400px);
+    width: clamp(200px, 60%, 600px);
     border: 5px solid var(--border);
     border-radius: 10px;
     text-align: center;
@@ -91,6 +94,23 @@ button {
 
 #result-modal {
     font-weight: bold;
+}
+
+#copy-btn {
+    width: clamp(25px, 5vw, 30px);
+    height: clamp(25px, 5vw, 30px);
+    border-radius: 5px;
+
+    position: absolute;
+    top: 5px;
+    left: 5px;
+
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#copy-btn:hover {
+    transform: scale(1.2);
 }
 
 #close-modal {

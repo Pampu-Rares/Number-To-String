@@ -16,9 +16,9 @@
             <details>
                 <summary>How does this work</summary>
                 <ul>
-                    <li>This is a site where you can input any number you can think of.</li>
+                    <li>This is a site where you can input any number that you can think of.</li>
                     <li>After you press enter, the entered number will appear on screen written in words instead of numbers.</li>
-                    <li><strong>Attention:</strong> you must enter a number, or else it won't work.</li>
+                    <li><strong>Attention:</strong> you must enter a number, letters or other symbols will be ignored.</li>
                 </ul>
             </details>
             <input id="number-input" type="text" placeholder="Input your number here">
@@ -26,11 +26,12 @@
         </div>
 
         <dialog id="result-modal">
+            <img src="./Icons/copy_icon.png" id="copy-btn">
             <p id="result"></p>
             <button id="close-modal">X</button>
         </dialog>
     </main>
 
-    <script src="number-to-string.js"></script>
+    <script src="script.js" async type="module"></script>
   </body>
 </html>
