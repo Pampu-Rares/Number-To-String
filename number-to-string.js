@@ -165,7 +165,9 @@ function approximateNrOfZeroes(unitsNr) {
 }
 
 function transformThousand(number, numberLength) {
-    return transformUpToAThousand(number) + " " + numberOfZeroes[approximateNrOfZeroes(numberLength)] + " ";
+    const thousand = transformUpToAThousand(number);
+    if(thousand == "")
+        return thousand + " " + numberOfZeroes[approximateNrOfZeroes(numberLength)] + " ";
 }
 
 export function transformToString(number) {
