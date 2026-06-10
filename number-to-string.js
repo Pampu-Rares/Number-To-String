@@ -166,8 +166,8 @@ function approximateNrOfZeroes(unitsNr) {
 
 function transformThousand(number, numberLength) {
     const thousand = transformUpToAThousand(number);
-    if(thousand == "")
-        return thousand + " " + numberOfZeroes[approximateNrOfZeroes(numberLength)] + " ";
+    if(thousand === "") return '';
+    return thousand + " " + numberOfZeroes[approximateNrOfZeroes(numberLength)] + " ";
 }
 
 export function transformToString(number) {
@@ -175,11 +175,15 @@ export function transformToString(number) {
     let string = "";
     let { numberLength, numberString } = getNrOfUnits(number);
     while(numberLength > 0) {
+        if(numberLength === 3 && !Number.isNaN(parseInt(numberString))) {  
+            if(parseInt(numberString) < 99) string += " and ";
+        }
         string += transformThousand(parseInt(numberString.slice(0, 3)), numberLength);
         numberString = numberString.slice(3);
         numberLength -= 3;
     }
-    return string[0].toUpperCase() + string.slice(1, string.length - 2) + '.';
+    if(string[string.length - 1] === ' ') string = string.slice(0, string.length - 2);
+    return string[0].toUpperCase() + string.slice(1) + '.';
 }
 
 /*
